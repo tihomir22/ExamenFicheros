@@ -29,6 +29,7 @@ public class ExamenFicheros {
         Iterator<Clientes> it = null;
         String entrada, id, nombre, precio, categoria, embalaje, kg, litros;
         Clientes cactivo = null;
+        Articulos aactivo = null;
         Aperitivos aper1;
         Bebidas beb1;
         Varios var1;
@@ -182,6 +183,59 @@ public class ExamenFicheros {
                     }
 
                     break;
+                case 8:
+                    System.out.println("Elija un cliente,introduzca su dni");
+                    ga.imprimirClientes();
+                    teclado.nextLine();
+                    entrada = teclado.nextLine();
+
+                    try {
+                        cactivo = ga.buscarClientes(entrada);
+                        if (cactivo != null) {
+                            ga.borrarCliente(cactivo, rutaInicial.getName());
+                        } else {
+                            System.out.println("No existe el cliente");
+                        }
+                    } catch (ClienteNoExisteExcepcion ex) {
+                        Logger.getLogger(ExamenFicheros.class.getName()).log(Level.SEVERE, null, ex);
+                    } catch (ClienteTieneArticulos ex) {
+                        Logger.getLogger(ExamenFicheros.class.getName()).log(Level.SEVERE, null, ex);
+                    }
+
+                    break;
+                case 9:
+                    System.out.println("Elija un cliente,introduzca su dni");
+                    ga.imprimirClientes();
+                    teclado.nextLine();
+                    entrada = teclado.nextLine();
+                    try {
+                        cactivo = ga.buscarClientes(entrada);
+                        if (cactivo != null) {
+                            System.out.println("Seleccione un articulo por su codigo");
+                            cactivo.imprimirArticulosCliente();
+                            entrada = teclado.nextLine();
+                            aactivo = cactivo.buscarArticulo(entrada);
+                            if (aactivo != null) {
+                                System.out.println("Cual será el nuevo codigo del articulo?");
+                                aactivo.setId(teclado.nextLine());
+                                ga.deListaACarpeta();
+                            } else {
+                                System.out.println("No existe el articulo introducido ");
+                            }
+                        } else {
+                            System.out.println("No existe tal cliente");
+                        }
+                    } catch (ClienteNoExisteExcepcion ex) {
+                        Logger.getLogger(ExamenFicheros.class.getName()).log(Level.SEVERE, null, ex);
+                    } catch (IOException ex) {
+                        Logger.getLogger(ExamenFicheros.class.getName()).log(Level.SEVERE, null, ex);
+                    }
+
+                    break;
+                case 10:
+                    ArrayList<String> listaFicheros = new ArrayList<>();
+                    ga.deCarpetaACSV(rutaInicial.getName(), listaFicheros);
+                    break;
             }
         } while (opcion != 0);
 
@@ -195,7 +249,9 @@ public class ExamenFicheros {
         System.out.println("5.-Dar de alta un producto para un cliente");
         System.out.println("6.-Para el articulo generado se debera generar un archivo con sus datos");
         System.out.println("7.-Calcular cajas para un producto en concreto");
-        
+        System.out.println("8.-Borrar un cliente");
+        System.out.println("9.-Modificar un articulo tanto en lista como archivos");
+        System.out.println("10.-Crea a partir de la estructura de carpetas");
     }
 
 }

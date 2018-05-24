@@ -1,3 +1,4 @@
 ﻿1000;Mercadona;0001;Papas;0,60;Aperitivo; Bolsa;0002;Cocacola;2,0;Bebida;1;
 1001;Consum;0001;Papas;0,70;Aperitivo;Bolsa;0003;Fanta;2,1;Bebida;1;0005;Mantel;0,30;Varios;0,1;
 1002;Mas y mas; 0004;Cerveza; 1,0; Bebida; 1; 0002;Cocacola;0,5;Bebida;0,5;0006; Vasos; 0,10; Varios;0,20;
+1004;Vacio;

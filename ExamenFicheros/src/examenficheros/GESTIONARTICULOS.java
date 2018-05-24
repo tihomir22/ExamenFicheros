@@ -13,6 +13,8 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Iterator;
 import java.util.Scanner;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 
 /**
  *
@@ -197,6 +199,37 @@ public class GESTIONARTICULOS {
         return listaUsuarios;
     }
 
+    public void deCarpetaACSV(String rutaInicial, ArrayList<String> listaFicheros) {
+        File rutaFich = new File(rutaInicial);
+
+        File[] listaFich = rutaFich.listFiles();
+        for (int i = 0; i < listaFich.length; i++) {
+            if (i == (listaFich.length - 1)) {
+                listaFicheros.add(listaFich[i].getName() + ";" + "\n");
+            } else {
+                listaFicheros.add(listaFich[i].getName() + ";");
+                if (listaFich[i].isDirectory()) {
+                    deCarpetaACSV(rutaInicial + "/" + listaFich[i].getName(), listaFicheros);
+
+                }
+            }
+
+            System.out.println(listaFicheros.size());
+        }
+        File ficheroDestino = new File("registroX.csv");
+        try {
+            ficheroDestino.createNewFile();
+            PrintWriter pw = new PrintWriter(ficheroDestino);
+            for (int i = 0; i < listaFicheros.size(); i++) {
+                pw.print(listaFicheros.get(i));
+            }
+            pw.close();
+        } catch (IOException ex) {
+            Logger.getLogger(GESTIONARTICULOS.class.getName()).log(Level.SEVERE, null, ex);
+        }
+
+    }
+
     public void imprimirClientes() {
         for (int i = 0; i < this.listaClientesCLASS.size(); i++) {
             System.out.println(this.listaClientesCLASS.get(i).toString());
@@ -223,4 +256,16 @@ public class GESTIONARTICULOS {
 
     }
 
+    public void borrarCliente(Clientes c, String rutaInicial) throws ClienteTieneArticulos {
+        File rutaActual = new File(rutaInicial + "/" + c.getNombre());
+        File[] listaFicheros = rutaActual.listFiles();
+        if (listaFicheros.length != 0) {
+            throw new ClienteTieneArticulos(c);
+        } else {
+            System.out.println("DETECTADO DIR VACIO");
+
+            rutaActual.delete();
+            this.listaClientesCLASS.remove(c);
+        }
+    }
 }
